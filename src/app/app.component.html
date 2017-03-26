@@ -1,4 +1,18 @@
-<h1>
-  {{title}}
-</h1>
-<router-outlet></router-outlet>
+<md-toolbar>
+  <md-icon (click)="sidenav.toggle()">menu</md-icon>
+  <span class="spacer"></span>
+  <md-input-container>
+    <input mdInput placeholder="Search the App">
+  </md-input-container>
+  <div class="appLogo"></div>
+</md-toolbar>
+<md-sidenav-container>
+  <md-sidenav #sidenav mode="side" opened="true">
+    <md-list>
+      <md-list-item><p><md-icon>info_outline</md-icon>About us</p></md-list-item>
+      <md-divider></md-divider>
+      <md-list-item><p><md-icon>settings</md-icon>Settings</p></md-list-item>
+    </md-list>
+  </md-sidenav>
+  <router-outlet></router-outlet>
+</md-sidenav-container>

@@ -1,0 +1,7 @@
+<nav md-tab-nav-bar>
+  <a md-tab-link routerLink="/exercises" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">Exercises</a>
+  <a md-tab-link routerLink="/workouts" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">Workouts</a>
+  <a md-tab-link routerLink="/stats" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">My stats</a>
+</nav>
+<router-outlet></router-outlet>
+

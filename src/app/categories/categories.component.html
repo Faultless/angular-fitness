@@ -1,9 +1,11 @@
-<div class="container">
-  <div class="row" *ngFor="let category of categories">
-    <div class="card card-block">
-      <h4 class="card-title">{{ category.name }}</h4>
-      <a href="#" class="card-link">Card link</a>
-      <a href="#" class="card-link">Another link</a>
-    </div>
-  </div>
-</div>
+<md-list>
+  <md-list-item *ngFor="let category of categories">
+    <md-card class="category-card">
+      <md-card-header>
+        <md-card-title>
+          {{category.name}}
+        </md-card-title>
+      </md-card-header>
+    </md-card>
+  </md-list-item>
+</md-list>

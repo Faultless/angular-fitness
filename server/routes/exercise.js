@@ -1,7 +1,11 @@
 var express = require('express');
+var lodash = require('lodash');
 var model = require('../models/exercise');
 var category = require('../models/category');
+var muscleGroup = require('../models/muscleGroup');
 var exercise = express.Router();
+
+var newExercise = new model();
 
 exercise.route('/')
     // List all exercises
@@ -18,24 +22,30 @@ exercise.route('/')
         category.find({ 'name': req.body.category }, (err, Category) => {
             if(err)
                 res.send(err);
-            var newExercise = new model({
-                name: req.body.name,
-                category: Category[0]._id,
-                demoVideo: req.body.demoVideo
-            });
+            newExercise.name= req.body.name;
+            newExercise.category= Category[0]._id;
+            newExercise.demoVideo= req.body.demoVideo;
 
             req.body.muscleGroups.forEach((element, index, array) => {
-                newExercise.muscleGroups[index] = element;
-            });
-
-            newExercise.save((err) => {
-                if(err)
-                    res.send(err);
-                res.json({ message: 'Exercise created!' });
+                muscleGroup.find({ 'name': element }, (err, MuscleGroup) => {
+                    if(err)
+                        res.send(err);
+                    var itemsProcessed = 0;
+                    MuscleGroup.forEach((elem, ind, arr) => {
+                        newExercise.muscleGroups[index] = elem._id;
+                        itemsProcessed++;
+                        if(itemsProcessed === arr.length){
+                            newExercise.save((err) => {
+                                if(err)
+                                    res.send(err);
+                                res.json({ message: 'Exercise created!' });
+                            });
+                        }
+                    });
+                    
+                });
             });
         });
-
-        
     });
 
 exercise.route('/:exerciseId')
