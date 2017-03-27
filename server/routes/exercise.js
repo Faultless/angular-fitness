@@ -6,6 +6,7 @@ var muscleGroup = require('../models/muscleGroup');
 var exercise = express.Router();
 
 var newExercise = new model();
+var itemsProcessed = 0;
 
 exercise.route('/')
     // List all exercises
@@ -21,7 +22,7 @@ exercise.route('/')
     .post((req, res) => {
         category.find({ 'name': req.body.category }, (err, Category) => {
             if(err)
-                res.send(err);
+                return res.send();
             newExercise.name= req.body.name;
             newExercise.category= Category[0]._id;
             newExercise.demoVideo= req.body.demoVideo;
@@ -29,20 +30,20 @@ exercise.route('/')
             req.body.muscleGroups.forEach((element, index, array) => {
                 muscleGroup.find({ 'name': element }, (err, MuscleGroup) => {
                     if(err)
-                        res.send(err);
-                    var itemsProcessed = 0;
+                        return res.send();
+                    
                     MuscleGroup.forEach((elem, ind, arr) => {
-                        newExercise.muscleGroups[index] = elem._id;
-                        itemsProcessed++;
+                        newExercise.muscleGroups[index] = elem._id;  
+                        console.log(newExercise.muscleGroups[index]);        
                         if(itemsProcessed === arr.length){
-                            newExercise.save((err) => {
-                                if(err)
-                                    res.send(err);
+                            newExercise.save((error) => {
+                                if(error)
+                                    return res.send();
                                 res.json({ message: 'Exercise created!' });
                             });
-                        }
-                    });
-                    
+                        }   
+                        itemsProcessed ++;                     
+                    });          
                 });
             });
         });
